@@ -20,49 +20,48 @@ export default function Main() {
         setTodos(state => state.map(todo => todo._id === id ? { ...todo, isCompleted: !todo.isCompleted } : todo));
     };
 
-    const todoAddHandler = () => {
-        const lastId = Number((todos[todos.length - 1]._id).split('_')[1]);
+    const addTodoHandler = () => {
+        const lastId = Number(todos[todos.length - 1]._id.split('_')[1]);
 
-        const _id = `todo_${lastId + 1}`;
-        const text = prompt('New task:');
+        const _id = lastId + 1;
+        const text = prompt('New task to add');
         const newTask = { _id, text, isCompleted: false };
-    
+
         setTodos(state => [...state, newTask]);
     };
 
     return (
         <main className="main">
+
             <section className="todo-list-container">
                 <h1>Todo List</h1>
 
                 <div className="add-btn-container">
-                    <button className="btn" onClick={todoAddHandler}>+ Add new Todo</button>
+                    <button className="btn" onClick={addTodoHandler}>+ Add new Todo</button>
                 </div>
 
-                <div className="table-wrapper">
-                    {isLoading
-                        ? <Spinner />
-                        : <table className="table">
-                            <thead>
-                                <tr>
-                                    <th className="table-header-task">Task</th>
-                                    <th className="table-header-status">Status</th>
-                                    <th className="table-header-action">Action</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                {todos.map(item => (
-                                    <TodoItem
-                                        key={item._id}
-                                        {...item}
-                                        changeStatusHandler={changeStatusHandler}
-                                    />
-                                ))}
-                            </tbody>
-                        </table>
-                    }
-                </div>
+                {isLoading
+                    ? <Spinner />
+                    : <table className="table">
+                        <thead>
+                            <tr>
+                                <th className="table-header-task">Task</th>
+                                <th className="table-header-status">Status</th>
+                                <th className="table-header-action">Action</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {todos.map(item =>
+                                <TodoItem
+                                    key={item._id}
+                                    {...item}
+                                    changeStatusHandler={changeStatusHandler}
+                                />)}
+                        </tbody>
+                    </table>
+                }
+
             </section>
-        </main>
+        </main >
     );
 }
